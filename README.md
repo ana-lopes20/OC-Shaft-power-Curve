@@ -1,1 +1,0 @@
-# OC-Shaft-power-Curve
