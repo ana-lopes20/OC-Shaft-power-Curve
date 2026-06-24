@@ -175,7 +175,23 @@ function updateGraph(config) {
   const d = mapData(config);
   chart.data.datasets[0].data = toPoints(d.immersionList, d.ocList);
   chart.data.datasets[1].data = toPoints(d.immersionList, d.shaftList);
-  
+
+  // Make both y-axes (Aerator Shaft [kW] and Oxygenation Capacity [kg O₂/h])
+  // use the same range, computed from the combined data of both series.
+  const allY = [...d.ocList, ...d.shaftList].filter((v) => Number.isFinite(v));
+  if (allY.length) {
+    let yMin = Math.min(...allY);
+    let yMax = Math.max(...allY);
+    const pad = (yMax - yMin) * 0.05 || 1; // small breathing room
+    yMin -= pad;
+    yMax += pad;
+
+    chart.options.scales.yShaft.min = yMin;
+    chart.options.scales.yShaft.max = yMax;
+    chart.options.scales.yOC.min = yMin;
+    chart.options.scales.yOC.max = yMax;
+  }
+
   const anns = chart.options.plugins.annotation.annotations;
 
   anns.designLine.value = d.design;
