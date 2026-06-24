@@ -156,18 +156,11 @@ function mapData(config) {
   const RPM = Number(values['1f189a11-8930-4983-d421-08ded1df9683'].value)  
 
 
-  // Defaults match your screenshot
-  const immersionList = immersionRangeFactor.map((factor) => {
-    factor * diameter
-  })
+  const immersionList = immersionRangeFactor.map((factor) => factor * diameter)
 
-  const shaftList = immersionRangeFactor.map((factor) => {
-    (A * factor + B) * Math.pow((RPM/60), en-2) * Math.pow((diameter/1000), ed-1) * 9.81
-  })                                       
+  const shaftList = immersionRangeFactor.map((factor) => (A * factor + B) * Math.pow((RPM/60), en-2) * Math.pow((diameter/1000), ed-1) * 9.81 )                                       
                                              
-  const ocList = shaftList.map((shaft) => {
-    shaft * 2.3
-  })
+  const ocList = shaftList.map((shaft) => shaft * 2.3)
                                                                                                                                                                                                                                      
   return {
     immersionList,
