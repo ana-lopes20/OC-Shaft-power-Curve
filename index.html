@@ -182,13 +182,13 @@ window.addEventListener('message', function (e) {
     console.log('Incoming config:', e.data.args);
     updateGraph(e.data.args);
     
-    window.top.postMessage({                    
-      name: 'elfsquad.updateTextValue',
-      args: {
-        nodeId: 'cc62c043-899e-4b91-ab6d-08ded1293b42',
-        textValue: 'text from the graph builder',
-      },
-    }, '*');
+    // window.top.postMessage({                    
+    //   name: 'elfsquad.updateTextValue',
+    //   args: {
+    //     nodeId: 'cc62c043-899e-4b91-ab6d-08ded1293b42',
+    //     textValue: 'text from the graph builder',
+    //   },
+    // }, '*');
   }
 });
 
