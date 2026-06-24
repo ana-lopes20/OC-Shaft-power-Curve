@@ -122,7 +122,27 @@ function mapData(config) {
   const values = config.values || {};
 
   // Defaults match your screenshot
-  const immersion = config.features?.IMMERSION_DEPTH || [-120, -80, -40, 0, 80, 150];
+  const immersion = config.features?.IMMERSION_DEPTH || [ 
+    Number(values['bedc78d0-0502-4502-fd05-08ded12a76d0'].value), 
+    Number(values['305f191e-84e7-4f06-fd06-08ded12a76d0'].value), 
+    Number(values['ce7b50fa-f61e-4f06-fd07-08ded12a76d0'].value),
+    Number(values['73c95b77-eda9-49c6-fd08-08ded12a76d0'].value),
+    Number(values['de22e626-5d2b-40f0-fd09-08ded12a76d0'].value), 
+    Number(values['2374e6e4-3056-422b-fd0a-08ded12a76d0'].value),
+    Number(values['69043cac-bc89-43e8-fd0b-08ded12a76d0'].value),
+    Number(values['d326c24a-439f-4d38-fd0c-08ded12a76d0'].value),
+    Number(values['927ba75b-b224-40ac-fd0d-08ded12a76d0'].value),
+    Number(values['153ffc35-8ff2-4bd9-fd0e-08ded12a76d0'].value),
+    Number(values['2752c1ff-8132-4109-fd0f-08ded12a76d0'].value),
+    Number(values['f7cb7f59-49f9-4171-fd10-08ded12a76d0'].value),
+    Number(values['c7065477-65e4-4cd4-fd11-08ded12a76d0'].value),
+    Number(values['f16c3bbf-e3de-4d6e-fd12-08ded12a76d0'].value),
+    Number(values['739e90d8-1885-48e6-fd13-08ded12a76d0'].value),
+    Number(values['c8218521-cd58-4ae6-fd14-08ded12a76d0'].value),
+    Number(values['9b945107-1cbc-4008-fd15-08ded12a76d0'].value),
+    Number(values['730d8b82-ab55-4ee5-fd16-08ded12a76d0'].value),
+    Number(values['7cc013a2-431f-41af-fd17-08ded12a76d0'].value)];
+  
   const oc        = [
     Number(values['a9eb92cb-e77b-4b8e-fcf2-08ded12a76d0'].value), 
     Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'].value), 
