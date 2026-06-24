@@ -162,7 +162,7 @@ function mapData(config) {
   })
 
   const shaftList = immersionRangeFactor.map((factor) => {
-    (A * factor + B) * math.pow((RPM/60), en-2) * math.pow((diameter/1000), ed-1) * 9.81
+    (A * factor + B) * Math.pow((RPM/60), en-2) * Math.pow((diameter/1000), ed-1) * 9.81
   })                                       
                                              
   const ocList = shaftList.map((shaft) => {
