@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Elfsquad Graph</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .chart-wrap { position: relative; height: 500px; width: 100%; }
+    h3 { margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+<h3>OC &amp; Shaft vs Immersion Depth</h3>
+<div class="chart-wrap">
+  <canvas id="myChart"></canvas>
+</div>
+
+<script>
+let chart;
+
+function initChart() {
+  const ctx = document.getElementById('myChart').getContext('2d');
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      datasets: [
+        {
+          label: 'OC [kg O₂/h]',
+          data: [],
+          yAxisID: 'yOC',
+          borderColor: '#1f77b4',
+          backgroundColor: '#1f77b4',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0
+        },
+        {
+          label: 'Aerator Shaft [kW]',
+          data: [],
+          yAxisID: 'yShaft',
+          borderColor: '#c0392b',
+          backgroundColor: '#c0392b',
+          borderWidth: 2,
+          pointRadius: 0,
+          tension: 0
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: {
+          type: 'linear',
+          position: 'bottom',
+          title: { display: true, text: 'Immersion Depth [mm]' },
+          grid: { color: '#e0e0e0' }
+        },
+        yShaft: {
+          type: 'linear',
+          position: 'left',
+          title: { display: true, text: 'Aerator Shaft [kW]', color: '#c0392b' },
+          ticks: { color: '#c0392b' },
+          grid: { color: '#e0e0e0' }
+        },
+        yOC: {
+          type: 'linear',
+          position: 'right',
+          title: { display: true, text: 'Oxygenation Capacity [kg O₂/h]', color: '#1f77b4' },
+          ticks: { color: '#1f77b4' },
+          grid: { drawOnChartArea: false }
+        }
+      },
+      plugins: {
+        legend: { position: 'top' },
+        annotation: {
+          annotations: {
+            designLine: {
+              type: 'line',
+              scaleID: 'x',
+              value: 0,
+              borderColor: '#7a8c1f',
+              borderWidth: 2,
+              label: {
+                display: true,
+                content: 'Design',
+                position: 'start',
+                backgroundColor: 'rgba(122,140,31,0.85)',
+                color: '#fff'
+              }
+            },
+            maxLine: {
+              type: 'line',
+              scaleID: 'x',
+              value: 0,
+              borderColor: '#000',
+              borderWidth: 2,
+              label: {
+                display: true,
+                content: 'Maximum',
+                position: 'start',
+                backgroundColor: 'rgba(0,0,0,0.85)',
+                color: '#fff'
+              }
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// Convert parallel arrays into [{x, y}, ...] points
+function toPoints(xs, ys) {
+  return xs.map((x, i) => ({ x: Number(x), y: Number(ys[i]) }));
+}
+
+function mapData(config) {
+  const values = config.values || {};
+
+  // Defaults match your screenshot
+  const immersion = config.features?.IMMERSION_DEPTH || [-120, -80, -40, 0, 80, 150];
+  const oc        = config.features?.OC              || [60, 68, 75, 82, 95, 105];
+  const shaft     = config.features?.SHAFT           || [62, 75, 90, 105, 125, 140];
+
+  return {
+    immersion,
+    oc,
+    shaft,
+    design: Number(values['4936e0e8-2d41-45e4-3a2e-08dea5fb34b1']?.value ?? 76),
+    max:    Number(values['ef520f95-6e4a-4ff6-3a2f-08dea5fb34b1']?.value ?? 109)
+  };
+}
+
+function updateGraph(config) {
+  const d = mapData(config);
+  chart.data.datasets[0].data = toPoints(d.immersion, d.oc);
+  chart.data.datasets[1].data = toPoints(d.immersion, d.shaft);
+  
+  const anns = chart.options.plugins.annotation.annotations;
+
+  anns.designLine.value = d.design;
+  anns.designLine.label = {
+    ...anns.designLine.label,
+    content: `Design: ${d.design}`
+  };
+
+  anns.maxLine.value = d.max;
+  anns.maxLine.label = {
+    ...anns.maxLine.label,
+    content: `Maximum: ${d.max}`
+  };
+  
+  chart.update();
+}
+
+window.addEventListener('message', function (e) {
+  if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
+    console.log('Incoming config:', e.data.args);
+    updateGraph(e.data.args);
+  }
+});
+  
+Chart.register(window['chartjs-plugin-annotation']);
+  
+initChart();
+// Render defaults immediately so the graph isn't empty before the first message
+updateGraph({});
+</script>
+</body>
+</html>
