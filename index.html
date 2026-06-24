@@ -173,8 +173,8 @@ function mapData(config) {
 
 function updateGraph(config) {
   const d = mapData(config);
-  chart.data.datasets[0].data = toPoints(d.immersion, d.oc);
-  chart.data.datasets[1].data = toPoints(d.immersion, d.shaft);
+  chart.data.datasets[0].data = toPoints(d.immersionList, d.ocList);
+  chart.data.datasets[1].data = toPoints(d.immersionList, d.shaftList);
   
   const anns = chart.options.plugins.annotation.annotations;
 
