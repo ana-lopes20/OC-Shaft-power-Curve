@@ -126,74 +126,53 @@ function toPoints(xs, ys) {
 function mapData(config) {
   const values = config.values || {};
 
-  // Defaults match your screenshot
-  const immersion = config.features?.IMMERSION_DEPTH || [ 
-    Number(values['88139ea1-59b7-4658-fd18-08ded12a76d0'].value), 
-    Number(values['d457819f-197b-48a2-fd19-08ded12a76d0'].value), 
-    Number(values['283835b2-b233-461e-fd1a-08ded12a76d0'].value),
-    Number(values['bc013412-a286-4a6e-fd1b-08ded12a76d0'].value),
-    Number(values['42289169-a148-454b-fd1c-08ded12a76d0'].value), 
-    Number(values['9ee39b52-fc69-48a4-fd1d-08ded12a76d0'].value),
-    Number(values['c660fa2d-17bc-4224-fd1e-08ded12a76d0'].value),
-    Number(values['1a3fcc8a-55cc-4ee9-fd1f-08ded12a76d0'].value),
-    Number(values['b54199bd-b144-411f-fd20-08ded12a76d0'].value),
-    Number(values['51f511b4-73ad-4398-fd21-08ded12a76d0'].value),
-    Number(values['04511cc1-9afd-4b7f-fd22-08ded12a76d0'].value),
-    Number(values['3b8e8082-b26e-4b06-fd23-08ded12a76d0'].value),
-    Number(values['b8f56d70-4175-4b05-fd24-08ded12a76d0'].value),
-    Number(values['2fdafd4b-604c-4db8-fd25-08ded12a76d0'].value),
-    Number(values['8dd54799-91d2-4fec-fd26-08ded12a76d0'].value),
-    Number(values['89570300-8a82-4238-fd27-08ded12a76d0'].value),
-    Number(values['4287f5e9-2e39-40d6-fd28-08ded12a76d0'].value),
-    Number(values['b98face4-2770-4218-fd29-08ded12a76d0'].value),
-    Number(values['8272432c-fe69-4cf3-fd2a-08ded12a76d0'].value)];
-  
-  const oc        = [
-    Number(values['a9eb92cb-e77b-4b8e-fcf2-08ded12a76d0'].value), 
-    Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'].value), 
-    Number(values['0a54fcc3-688b-4ac1-fcf4-08ded12a76d0'].value),
-    Number(values['f8cee551-1e48-448d-fcf5-08ded12a76d0'].value),
-    Number(values['a9fa4ddb-9a6e-490a-fcf6-08ded12a76d0'].value), 
-    Number(values['4197e152-b118-420d-fcf7-08ded12a76d0'].value),
-    Number(values['b986a84f-e7b0-4ec9-fcf8-08ded12a76d0'].value),
-    Number(values['34160ac9-414c-4f25-fcf9-08ded12a76d0'].value),
-    Number(values['795ec6a0-d43e-4e4c-fcfa-08ded12a76d0'].value),
-    Number(values['b5c2c169-86c0-4112-fcfb-08ded12a76d0'].value),
-    Number(values['8f87aaf0-adc9-419d-fcfc-08ded12a76d0'].value),
-    Number(values['f23964b3-a79a-461e-fcfd-08ded12a76d0'].value),
-    Number(values['6bc8a3d8-f250-4e25-fcfe-08ded12a76d0'].value),
-    Number(values['a4c7be3a-5dbe-4221-fcff-08ded12a76d0'].value),
-    Number(values['abb8a001-4e9b-4744-fd00-08ded12a76d0'].value),
-    Number(values['31c5d2e0-086b-415d-fd01-08ded12a76d0'].value),
-    Number(values['68b6068d-ebce-48b9-fd02-08ded12a76d0'].value),
-    Number(values['78d3e876-b3f8-4abe-fd03-08ded12a76d0'].value),
-    Number(values['16910441-9e07-4c06-fd04-08ded12a76d0'].value)];
-                                                                                                                                                                                                                                     
-  const shaft     = config.features?.SHAFT           || [
-    Number(values['bedc78d0-0502-4502-fd05-08ded12a76d0'].value), 
-    Number(values['305f191e-84e7-4f06-fd06-08ded12a76d0'].value), 
-    Number(values['ce7b50fa-f61e-4f06-fd07-08ded12a76d0'].value),
-    Number(values['73c95b77-eda9-49c6-fd08-08ded12a76d0'].value),
-    Number(values['de22e626-5d2b-40f0-fd09-08ded12a76d0'].value), 
-    Number(values['2374e6e4-3056-422b-fd0a-08ded12a76d0'].value),
-    Number(values['69043cac-bc89-43e8-fd0b-08ded12a76d0'].value),
-    Number(values['d326c24a-439f-4d38-fd0c-08ded12a76d0'].value),
-    Number(values['927ba75b-b224-40ac-fd0d-08ded12a76d0'].value),
-    Number(values['153ffc35-8ff2-4bd9-fd0e-08ded12a76d0'].value),
-    Number(values['2752c1ff-8132-4109-fd0f-08ded12a76d0'].value),
-    Number(values['f7cb7f59-49f9-4171-fd10-08ded12a76d0'].value),
-    Number(values['c7065477-65e4-4cd4-fd11-08ded12a76d0'].value),
-    Number(values['f16c3bbf-e3de-4d6e-fd12-08ded12a76d0'].value),
-    Number(values['739e90d8-1885-48e6-fd13-08ded12a76d0'].value),
-    Number(values['c8218521-cd58-4ae6-fd14-08ded12a76d0'].value),
-    Number(values['9b945107-1cbc-4008-fd15-08ded12a76d0'].value),
-    Number(values['730d8b82-ab55-4ee5-fd16-08ded12a76d0'].value),
-    Number(values['7cc013a2-431f-41af-fd17-08ded12a76d0'].value)];
+  const immersionRangeFactor = [
+    -0.05,
+    -0.04,
+    -0.03,
+    -0.02,
+    -0.01,
+    0,
+    0.01,
+    0.02,
+    0.03,
+    0.04,
+    0.05,
+    0.06,
+    0.07,
+    0.08,
+    0.09,
+    0.1,
+    0.11,
+    0.12,
+    0.125,
+  ]
 
+  const diameter = Number(values['631f5fbb-0e21-40b8-d41f-08ded1df9683'].value)
+  const A = Number(values['f4e11594-8186-4c82-9d4f-08ded1df36b8'].value)
+  const B = Number(values['e6f092b1-122c-4a68-dbf9-08ded1e2d0bd'].value)
+  const en = Number(values['8256694b-8a23-474a-3ed3-08ded1e03ef1'].value)
+  const ed = Number(values['d94a4728-ae65-4323-3ed4-08ded1e03ef1'].value)
+  const RPM = Number(values['1f189a11-8930-4983-d421-08ded1df9683'].value)  
+
+
+  // Defaults match your screenshot
+  const immersionList = immersionRangeFactor.map((factor) => {
+    factor * diameter
+  }
+
+  const shaftList = immersionRangeFactor.map((factor) => {
+    (A * factor + B) * math.pow((RPM/60), en-2) * math.pow((diameter/1000), ed-1) * 9.81
+  }                                       
+                                             
+  const ocList = shaftList.map((shaft) => {
+    shaft * 2.3
+  }
+                                                                                                                                                                                                                                     
   return {
-    immersion,
-    oc,
-    shaft,
+    immersionList,
+    ocList,
+    shaftList,
     design: Number(values['0107f6ba-fc0c-480a-f105-08ded128ace1']?.value ?? 76),
     max:    Number(values['2c40b2f3-3792-4762-f104-08ded128ace1']?.value ?? 109)
   };
