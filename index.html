@@ -204,6 +204,7 @@ let lastSentText = null;
 
 window.addEventListener('message', function (e) {
   if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
+    console.log('Received configuration update:', e.data.args);
     updateGraph(e.data.args);
 
     // derive whatever text you want to push back
