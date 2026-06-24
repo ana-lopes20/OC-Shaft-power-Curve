@@ -123,25 +123,26 @@ function mapData(config) {
 
   // Defaults match your screenshot
   const immersion = config.features?.IMMERSION_DEPTH || [-120, -80, -40, 0, 80, 150];
-  const oc        = config.features?.OC              || [Number(values['a9eb92cb-e77b-4b8e-fcf2-08ded12a76d0'], 
-                                                         Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'], 
-                                                         Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'],
-                                                         Number(values['f8cee551-1e48-448d-fcf5-08ded12a76d0'],
-                                                         Number(values['a9fa4ddb-9a6e-490a-fcf6-08ded12a76d0'], 
-                                                         Number(values['4197e152-b118-420d-fcf7-08ded12a76d0'],
-                                                         Number(values['b986a84f-e7b0-4ec9-fcf8-08ded12a76d0'],
-                                                         Number(values['34160ac9-414c-4f25-fcf9-08ded12a76d0'],
-                                                         Number(values['795ec6a0-d43e-4e4c-fcfa-08ded12a76d0'],
-                                                         Number(values['b5c2c169-86c0-4112-fcfb-08ded12a76d0'],
-                                                         Number(values['8f87aaf0-adc9-419d-fcfc-08ded12a76d0'],
-                                                         Number(values['f23964b3-a79a-461e-fcfd-08ded12a76d0'],
-                                                         Number(values['6bc8a3d8-f250-4e25-fcfe-08ded12a76d0'],
-                                                         Number(values['a4c7be3a-5dbe-4221-fcff-08ded12a76d0'],
-                                                         Number(values['abb8a001-4e9b-4744-fd00-08ded12a76d0'],
-                                                         Number(values['31c5d2e0-086b-415d-fd01-08ded12a76d0'],
-                                                         Number(values['68b6068d-ebce-48b9-fd02-08ded12a76d0'],
-                                                         Number(values['78d3e876-b3f8-4abe-fd03-08ded12a76d0'],
-                                                        Number(values['16910441-9e07-4c06-fd04-08ded12a76d0']];
+  const oc        = [
+    Number(values['a9eb92cb-e77b-4b8e-fcf2-08ded12a76d0'].value), 
+    Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'].value), 
+    Number(values['7ea529a3-5470-4936-fcf3-08ded12a76d0'].value),
+    Number(values['f8cee551-1e48-448d-fcf5-08ded12a76d0'].value),
+    Number(values['a9fa4ddb-9a6e-490a-fcf6-08ded12a76d0'].value), 
+    Number(values['4197e152-b118-420d-fcf7-08ded12a76d0'].value),
+    Number(values['b986a84f-e7b0-4ec9-fcf8-08ded12a76d0'].value),
+    Number(values['34160ac9-414c-4f25-fcf9-08ded12a76d0'].value),
+    Number(values['795ec6a0-d43e-4e4c-fcfa-08ded12a76d0'].value),
+    Number(values['b5c2c169-86c0-4112-fcfb-08ded12a76d0'].value),
+    Number(values['8f87aaf0-adc9-419d-fcfc-08ded12a76d0'].value),
+    Number(values['f23964b3-a79a-461e-fcfd-08ded12a76d0'].value),
+    Number(values['6bc8a3d8-f250-4e25-fcfe-08ded12a76d0'].value),
+    Number(values['a4c7be3a-5dbe-4221-fcff-08ded12a76d0'].value),
+    Number(values['abb8a001-4e9b-4744-fd00-08ded12a76d0'].value),
+    Number(values['31c5d2e0-086b-415d-fd01-08ded12a76d0'].value),
+    Number(values['68b6068d-ebce-48b9-fd02-08ded12a76d0'].value),
+    Number(values['78d3e876-b3f8-4abe-fd03-08ded12a76d0'].value),
+    Number(values['16910441-9e07-4c06-fd04-08ded12a76d0'].value)];
                                                                                                                                                                                                                                      
   const shaft     = config.features?.SHAFT           || [62, 75, 90, 105, 125, 140];
 
