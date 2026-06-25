@@ -6,7 +6,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
+    html, body {
+      background-color: #fff;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
     .chart-wrap {
       position: relative;
       height: 500px;
@@ -286,12 +292,34 @@ window.addEventListener('message', function (e) {
   }
 });
 
-  
-Chart.register(window['chartjs-plugin-annotation']);
-  
+// Draw a white background behind everything on the canvas, so the exported
+// PNG (toBase64Image) is opaque white instead of transparent. Registered
+// globally, so it applies to both the on-screen chart and the offscreen
+// export chart in renderFixedSizeImage().
+const whiteBackground = {
+  id: 'whiteBackground',
+  beforeDraw: (chart) => {
+    const { ctx, width, height } = chart;
+    ctx.save();
+    ctx.globalCompositeOperation = 'destination-over';
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, width, height);
+    ctx.restore();
+  }
+};
+
+Chart.register(window['chartjs-plugin-annotation'], whiteBackground);
+
 initChart();
-// Render defaults immediately so the graph isn't empty before the first message
-updateGraph({});
+
+// Render defaults immediately so the graph isn't empty before the first message.
+// Wrapped because mapData() reads values[...].value directly; with an empty
+// config those lookups throw until the first real configurationUpdated arrives.
+try {
+  updateGraph({});
+} catch (e) {
+  console.warn('Initial render skipped — no config values yet:', e);
+}
 </script>
 </body>
 </html>
