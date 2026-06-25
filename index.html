@@ -244,8 +244,7 @@ function updateGraph(config) {
 }
 
 function sendGraphImage() {
-  // toBase64Image returns "data:image/png;base64,AAAA..."
-  const dataUrl = chart.toBase64Image('image/png', 1);
+  const dataUrl = renderFixedSizeImage(1280, 720);
 
   window.top.postMessage({
     name: 'elfsquad.updateImageValue',
@@ -254,6 +253,31 @@ function sendGraphImage() {
       image: dataUrl,                  // see note on format below
     },
   }, '*');
+}
+
+function renderFixedSizeImage(width, height) {
+  const off = document.createElement('canvas');
+  off.width = width;
+  off.height = height;
+
+  const offChart = new Chart(off.getContext('2d'), {
+    type: 'line',
+    data: chart.config.data,                 // reuse current data
+    options: {
+      ...chart.config.options,
+      responsive: false,                     // honor the canvas size we set
+      maintainAspectRatio: false,
+      animation: false,                      // capture the final frame, not mid-animation
+      devicePixelRatio: 1                    // 1:1, no retina doubling
+    }
+  });
+
+  const dataUrl = off.toBase64Image
+    ? off.toBase64Image('image/png', 1)
+    : offChart.toBase64Image('image/png', 1);
+
+  offChart.destroy();                        // clean up the throwaway chart
+  return dataUrl;
 }
 
 window.addEventListener('message', function (e) {
