@@ -165,27 +165,26 @@ function mapData(config) {
   // Calculation of max immerion depth - This is done by calculation which system is the limiting factor, the gearbox or motor
   
   //Gearbox power at min service factor and corresponding immersion depth
-  const torquegearbox = Number(values['e116ed81-9463-4612-0140-08ded1defffe'].value)
-  const minservicefactor = Number(values['cd55d031-3552-450a-c5fa-08dec13e7b91'].value)
-  const maxgearboxpower = (torquegearbox /1000) * 2 * PI() * (RPM/60)
-  const maxgearboxpowerforaerator = maxgearboxpower/minservicefactor
-  const Immersiondepthgearbox = ((maxgearboxpowerforaerator / Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B) / A ) * diameter
+  const torqueGearbox = Number(values['e116ed81-9463-4612-0140-08ded1defffe'].value)
+  const minServiceFactor = Number(values['cd55d031-3552-450a-c5fa-08dec13e7b91'].value)
+  const maxGearboxPower = (torqueGearbox /1000) * 2 * PI() * (RPM/60)
+  const maxGearboxPowerForAerator = maxGearboxPower/minServiceFactor
+  const immersionDepthGearbox = ((maxGearboxPowerForAerator / Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B) / A ) * diameter
 
    //Motor power and corresponding immersion depth
-  const Actualmotorpowerwithderating = Number(values['0567a18a-77cd-4c9c-d434-08ded1df9683'].value)
-  const gearboxefficiency = Number(values['c0652a53-6407-40fc-1338-08dec1e9ecbf'].value)
+  const actualMotorPowerWithDerating = Number(values['0567a18a-77cd-4c9c-d434-08ded1df9683'].value)
+  const gearboxEfficiency = Number(values['c0652a53-6407-40fc-1338-08dec1e9ecbf'].value)
   const derating = Number(values['69a3a91b-6025-4779-9c8f-08dec205df14'].value)
-  const Motorpoweraftergearbox = Actualmotorpowerwithderating*(gearboxefficiency*derating)
-  const Immersiondepthmotor = ((Motorpoweraftergearbox / Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B) / A ) * diameter
+  const motorPowerAfterGearbox = actualMotorPowerWithDerating*(gearboxEfficiency*derating)
+  const immersionDepthMotor = ((motorPowerAfterGearbox / Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B) / A ) * diameter
 
   let max = 0
-  if (Immersiondepthgearbox > Immersiondepthmotor ) {
-    max = Immersiondepthmotor
-  } elseif (Immersiondepthgearbox =< Immersiondepthmotor ) {
-    max = Immersiondepthmotor
-  } 
-  
-                                                                                                                                                                                                                                     
+  if (immersionDepthGearbox > immersionDepthMotor) {
+    max = immersionDepthMotor
+  } else {
+    max = immersionDepthGearbox
+  }
+
   return {
     immersionList,
     ocList,
