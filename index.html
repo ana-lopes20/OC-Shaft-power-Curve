@@ -119,8 +119,7 @@ function initChart() {
 }
 
 
-let lastImageSig = null;
-let lastSentText = null;
+let lastImageConfig = null;
 
 // Convert parallel arrays into [{x, y}, ...] points
 function toPoints(xs, ys) {
@@ -237,8 +236,8 @@ function updateGraph(config) {
 
   // Only send the image when the graph data actually changed
   const sig = JSON.stringify(d);
-  if (sig !== lastImageSig) {
-    lastImageSig = sig;
+  if (sig !== lastImageConfig) {
+    lastImageConfig = sig;
     sendGraphImage();
   }
 }
@@ -284,20 +283,6 @@ window.addEventListener('message', function (e) {
   if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
     console.log('Received configuration update:', e.data.args);
     updateGraph(e.data.args);
-
-    // derive whatever text you want to push back
-    const newText = 'text from the graph builder';
-
-    if (newText !== lastSentText) {
-      lastSentText = newText;
-      window.top.postMessage({
-        name: 'elfsquad.updateTextValue',
-        args: {
-          nodeId: 'cc62c043-899e-4b91-ab6d-08ded1293b42',
-          textValue: newText,
-        },
-      }, '*');
-    }
   }
 });
 
