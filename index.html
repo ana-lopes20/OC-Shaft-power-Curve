@@ -118,6 +118,10 @@ function initChart() {
   });
 }
 
+
+let lastImageSig = null;
+let lastSentText = null;
+
 // Convert parallel arrays into [{x, y}, ...] points
 function toPoints(xs, ys) {
   return xs.map((x, i) => ({ x: Number(x), y: Number(ys[i]) }));
@@ -229,10 +233,28 @@ function updateGraph(config) {
     content: `Maximum: ${d.max}`
   };
   
-  chart.update();
+  chart.update('none');   // render final frame synchronously, no animation
+
+  // Only send the image when the graph data actually changed
+  const sig = JSON.stringify(d);
+  if (sig !== lastImageSig) {
+    lastImageSig = sig;
+    sendGraphImage();
+  }
 }
 
-let lastSentText = null;
+function sendGraphImage() {
+  // toBase64Image returns "data:image/png;base64,AAAA..."
+  const dataUrl = chart.toBase64Image('image/png', 1);
+
+  window.top.postMessage({
+    name: 'elfsquad.updateImageValue',
+    args: {
+      nodeId: '7a40d8e6-a6cb-4ca1-3ef0-08ded1e03ef1',   // the image node, not the text node
+      image: dataUrl,                  // see note on format below
+    },
+  }, '*');
+}
 
 window.addEventListener('message', function (e) {
   if (e.data && e.data.name === 'elfsquad.configurationUpdated') {
