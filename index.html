@@ -165,11 +165,11 @@ function mapData(config) {
   const RPM = Number(values['1f189a11-8930-4983-d421-08ded1df9683'].value)  
 
 
-  const immersionList = immersionRangeFactor.map((factor) => factor * diameter)
+  const immersionList = immersionRangeFactor.map((factor) => round(factor * diameter, 2))
 
-  const shaftList = immersionRangeFactor.map((factor) => (A * factor + B) * Math.pow(RPM/60, en-2) * Math.pow(diameter/1000, ed-1) * 9.81 )                                       
+  const shaftList = immersionRangeFactor.map((factor) => round((A * factor + B) * Math.pow(RPM/60, en-2) * Math.pow(diameter/1000, ed-1) * 9.81,2))                                       
                                              
-  const ocList = shaftList.map((shaft) => shaft * 2.3)
+  const ocList = shaftList.map((shaft) => round(shaft * 2.3, 2))
 
   // Calculation of max immerion depth - This is done by calculation which system is the limiting factor, the gearbox or motor
   
@@ -184,28 +184,33 @@ function mapData(config) {
   const actualMotorPowerWithDerating = Number(values['0567a18a-77cd-4c9c-d434-08ded1df9683'].value)
   const gearboxEfficiency = Number(values['c0652a53-6407-40fc-1338-08dec1e9ecbf'].value)
   const derating = Number(values['69a3a91b-6025-4779-9c8f-08dec205df14'].value)
-  const motorPowerAfterGearbox = actualMotorPowerWithDerating*(gearboxEfficiency*derating)
+  const motorPowerAfterGearbox = actualMotorPowerWithDerating * gearboxEfficiency * derating
   const immersionDepthMotor = ((motorPowerAfterGearbox / (Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81) - B) / A )*diameter
 
   let max = 0
-if (immersionDepthGearbox > immersionDepthMotor) {
-  max = immersionDepthMotor
-} else {
-  max = immersionDepthGearbox
-}
+  if (immersionDepthGearbox > immersionDepthMotor) {
+    max = round(immersionDepthMotor, 1)
+  } else {
+    max = round(immersionDepthGearbox, 1)
+  }
 
-const limit = 0.125 * diameter
-if (immersionDepthGearbox > limit || immersionDepthMotor > limit) {
-  max = Math.round(limit)
-}
+  const limit = 0.125 * diameter
+  if (immersionDepthGearbox > limit || immersionDepthMotor > limit) {
+    max = round(limit, 1)
+  }
 
   return {
     immersionList,
     ocList,
     shaftList,
-    design: Number(values['0107f6ba-fc0c-480a-f105-08ded128ace1']?.value ?? 76),
+    design: round(Number(values['0107f6ba-fc0c-480a-f105-08ded128ace1']?.value ?? 76), 2),
     max
   };
+}
+
+function round(value, decimals){
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
 }
 
 function updateGraph(config) {
