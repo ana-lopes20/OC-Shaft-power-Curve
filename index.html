@@ -171,7 +171,7 @@ function mapData(config) {
   //Gearbox power at min service factor and corresponding immersion depth
   const torqueGearbox = Number(values['e116ed81-9463-4612-0140-08ded1defffe'].value)
   const minServiceFactor = Number(values['cd55d031-3552-450a-c5fa-08dec13e7b91'].value)
-  const maxGearboxPower = (torqueGearbox /1000) * 2 * Math.PI() * (RPM/60)
+  const maxGearboxPower = (torqueGearbox /1000) * 2 * Math.PI * (RPM/60)
   const maxGearboxPowerForAerator = maxGearboxPower/minServiceFactor
   const immersionDepthGearbox = ((maxGearboxPowerForAerator / Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B) / A ) * diameter
 
