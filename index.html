@@ -161,13 +161,37 @@ function mapData(config) {
   const shaftList = immersionRangeFactor.map((factor) => (A * factor + B) * Math.pow((RPM/60), en-2) * Math.pow((diameter/1000), ed-1) * 9.81 )                                       
                                              
   const ocList = shaftList.map((shaft) => shaft * 2.3)
+
+  // Calculation of max immerion depth - This is done by calculation which system is the limiting factor, the gearbox or motor
+  
+    //Gearbox power at min service factor and corresponding immersion depth
+  const torquegearbox = Number(values['e116ed81-9463-4612-0140-08ded1defffe'].value)
+  const minservicefactor = Number(values['cd55d031-3552-450a-c5fa-08dec13e7b91'].value)
+  const maxgearboxpower =  (torquegearbox /1000)*2*PI()*(RPM/60)
+  const maxgearboxpowerforaerator = maxgearboxpower/minservicefactor
+  const Immersiondepthgearbox = (maxgearboxpowerforaerator / (RPM/60)^(en−2) · (diameter/1000)^(ed−1) · 9.81 − B) / A ) *diameter
+
+   //Motor power and corresponding immersion depth
+  const Actualmotorpowerwithderating = Number(values['0567a18a-77cd-4c9c-d434-08ded1df9683'].value)
+  const gearboxefficiency = Number(values['c0652a53-6407-40fc-1338-08dec1e9ecbf'].value)
+  const derating =  Number(values['69a3a91b-6025-4779-9c8f-08dec205df14'].value)
+  const Motorpoweraftergearbox- =Actualmotorpowerwithderating*(gearboxefficiency*derating)
+  const Immersiondepthmotor = (Motorpoweraftergearbox / (RPM/60)^(en−2) · (diameter/1000)^(ed−1) · 9.81 − B) / A ) *diameter
+
+  let max = 0
+ if (Immersiondepthgearbox > Immersiondepthmotor ) {
+   max = Immersiondepthmotor
+ } elseif (Immersiondepthgearbox =< Immersiondepthmotor ) {
+   max = Immersiondepthmotor
+ } 
+  
                                                                                                                                                                                                                                      
   return {
     immersionList,
     ocList,
     shaftList,
     design: Number(values['0107f6ba-fc0c-480a-f105-08ded128ace1']?.value ?? 76),
-    max:    Number(values['2c40b2f3-3792-4762-f104-08ded128ace1']?.value ?? 109)
+    max
   };
 }
 
