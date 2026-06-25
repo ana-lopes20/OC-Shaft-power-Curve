@@ -185,7 +185,7 @@ function mapData(config) {
   const gearboxEfficiency = Number(values['c0652a53-6407-40fc-1338-08dec1e9ecbf'].value)
   const derating = Number(values['69a3a91b-6025-4779-9c8f-08dec205df14'].value)
   const motorPowerAfterGearbox = actualMotorPowerWithDerating*(gearboxEfficiency*derating)
-  const immersionDepthMotor = ((motorPowerAfterGearbox / (Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81 - B)) / A )
+  const immersionDepthMotor = ((motorPowerAfterGearbox / (Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81) - B) / A )*diameter
 
   let max = 0
 if (immersionDepthGearbox > immersionDepthMotor) {
