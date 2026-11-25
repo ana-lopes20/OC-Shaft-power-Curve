@@ -187,17 +187,8 @@ function mapData(config) {
   const motorPowerAfterGearbox = actualMotorPowerWithDerating * gearboxEfficiency * derating
   const immersionDepthMotor = ((motorPowerAfterGearbox / (Math.pow(RPM/60, en - 2) * Math.pow(diameter/1000, ed - 1) * 9.81) - B) / A )*diameter
 
-  let max = 0
-  if (immersionDepthGearbox > immersionDepthMotor) {
-    max = round(immersionDepthMotor, 1)
-  } else {
-    max = round(immersionDepthGearbox, 1)
-  }
-
   const limit = 0.125 * diameter
-  if (immersionDepthGearbox > limit || immersionDepthMotor > limit) {
-    max = round(limit, 1)
-  }
+  const max = round(Math.min(immersionDepthGearbox, immersionDepthMotor, limit), 1)
 
   return {
     immersionList,
